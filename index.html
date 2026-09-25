@@ -114,7 +114,7 @@ button { font: inherit; }
 .meta { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .meta li { background: var(--ground); border: 1.5px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
 .intro .btn-lg { margin-top: 4px; }
-.intro-links { display: flex; justify-content: center; }
+.intro-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 8px; }
 .note { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.6; text-align: center; }
 
 /* ---- question（1画面1問） ---- */
@@ -295,6 +295,37 @@ button { font: inherit; }
 .type-card .hint { margin: 4px 0 0; padding: 8px 10px; font-size: 12px; }
 .type-card .btn-text { justify-self: start; padding-inline: 0; }
 
+/* ---- みんなの診断結果 ---- */
+.stats-page { display: grid; gap: 16px; padding-block: 6px; }
+.stats-total { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink-2); }
+.stats-total b { color: var(--amber-deep); font-size: 18px; }
+.stats-when { font-weight: 400; font-size: 12px; color: var(--muted); margin-left: 6px; }
+.stats-msg { margin: 0; font-size: 14px; line-height: 1.7; color: var(--muted); background: var(--surface); border: 1.5px dashed var(--line-strong); border-radius: 12px; padding: 14px; text-align: center; }
+.gbar { display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: var(--ground); }
+.gbar i { flex: 0 0 var(--w); background: var(--bar); }
+.glegend { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+.glegend li { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.glegend .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--bar); flex: none; }
+.glegend .gname { flex: 1; color: var(--ink-2); }
+.gnum, .rank-num { text-align: right; line-height: 1.2; white-space: nowrap; }
+.gnum b, .rank-num b { display: block; color: var(--amber-deep); font-size: 15px; }
+.gnum small, .rank-num small { font-size: 11px; color: var(--muted); }
+.rank { list-style: none; margin: 0; padding: 0; }
+.rank-item { display: grid; grid-template-columns: 24px 44px 1fr auto; align-items: center; gap: 8px; padding: 8px 4px; border-top: 1px solid var(--line); }
+.rank-item:first-child { border-top: 0; }
+.rank-no { font-family: var(--font-display); font-size: 16px; color: var(--amber-deep); text-align: center; }
+.rank-chara { width: 44px; height: 44px; object-fit: contain; }
+.rank-body { display: grid; gap: 3px; min-width: 0; }
+.rank-name { font-weight: 700; font-size: 14px; line-height: 1.3; }
+.rank-code { font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+.rank-bar { display: block; height: 8px; border-radius: 999px; background: var(--ground); overflow: hidden; }
+.rank-bar i { display: block; height: 100%; width: var(--w); background: var(--bar); border-radius: 999px; }
+.rank-item.is-me { background: var(--amber-soft); border-radius: 10px; border-top-color: transparent; }
+.rank-item.is-me + .rank-item { border-top-color: transparent; }
+.me-tag { display: inline-block; font-style: normal; font-size: 10px; font-weight: 700; color: #fff; background: var(--amber-deep); border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: 2px; }
+.stats-link { margin: 2px 0 0; }
+.stats-link .btn-text { padding: 4px 0; font-size: 13px; }
+
 /* ---- modal / toast ---- */
 .modal { position: fixed; inset: 0; background: rgba(43, 29, 18, .55); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
 .modal-card { background: var(--surface); border-radius: var(--radius); padding: 16px; max-width: 420px; width: 100%; display: grid; gap: 12px; max-height: calc(100dvh - 32px); overflow: auto; }
@@ -358,7 +389,7 @@ button { font: inherit; }
       <ul class="meta"><li>8問</li><li>約60秒</li><li>16タイプ</li><li>ビールの質問は出ません</li></ul>
       <button class="btn btn-primary btn-lg" type="button" data-action="start">診断をはじめる</button>
     </div>
-    <div class="intro-links"><button class="btn-text" type="button" data-action="types">16タイプをながめる</button><button class="btn-text" type="button" data-action="brewers">協力ブルワリー一覧</button></div>
+    <div class="intro-links"><button class="btn-text" type="button" data-action="types">16タイプをながめる</button><button class="btn-text" type="button" data-action="brewers">協力ブルワリー一覧</button><button class="btn-text" type="button" data-action="stats">みんなの診断結果</button></div>
     <p class="note">プロトタイプ版：設問と配点は「TCBF 味覚診断シート」に準拠しています。</p>
   </div>
 </section>
@@ -573,6 +604,7 @@ button { font: inherit; }
       <h1 class="type-name" id="typeName">やさしみスターター</h1>
       <p class="type-catch" id="typeCatch">軽くて、やさしくて、すっと消える</p>
       <p class="stats" id="stats" hidden></p>
+      <p class="stats-link" id="statsLink" hidden><button class="btn-text" type="button" data-action="stats">みんなの診断結果を見る →</button></p>
       <p class="type-desc" id="typeDesc">「さっぱり」「飲みやすい」が一番のほめ言葉。ホップの爽やかさがほんのり効いた、クセの少ないビールから入ると失敗しません。</p>
       <p class="discover">いつものビールと違う結果でも、それが狙いです。この診断は「まだ試していない、合うかもしれないスタイル」に出会うためのもの。会場でぜひ1杯、試してみてください。</p>
     </div>
@@ -622,6 +654,7 @@ button { font: inherit; }
         <button class="btn-text" type="button" data-action="retry" data-show="partial" hidden>もう一度診断する</button>
         <button class="btn-text" type="button" data-action="types">16タイプ一覧</button>
         <button class="btn-text" type="button" data-action="brewers">協力ブルワリー</button>
+        <button class="btn-text" type="button" data-action="stats">みんなの結果</button>
         <button class="btn-text" type="button" data-action="home" data-show="link own">トップへ</button>
       </div>
       <p class="legend">判定コード ｜ L/F 飲み口 ・ S/B 苦み ・ C/A 香り ・ H/M 原料</p>
@@ -812,6 +845,7 @@ button { font: inherit; }
     <div class="actions-row">
       <button class="btn-text" type="button" data-action="start">診断をはじめる</button>
       <button class="btn-text" type="button" data-action="brewers">協力ブルワリー一覧</button>
+      <button class="btn-text" type="button" data-action="stats">みんなの結果</button>
       <button class="btn-text" type="button" data-action="home">トップへ</button>
     </div>
   </div>
@@ -830,6 +864,34 @@ button { font: inherit; }
     <div class="actions-row">
       <button class="btn-text" type="button" data-action="start">診断をはじめる</button>
       <button class="btn-text" type="button" data-action="types">16タイプ一覧</button>
+      <button class="btn-text" type="button" data-action="stats">みんなの結果</button>
+      <button class="btn-text" type="button" data-action="home">トップへ</button>
+    </div>
+  </div>
+</section>
+<section class="screen" id="s-stats" data-screen="stats" aria-labelledby="statsTitle" hidden>
+  <div class="stats-page">
+    <div class="types-head">
+      <h2 id="statsTitle">みんなの診断結果</h2>
+      <p>これまでに診断した人の分布です。数字は、診断した人全体に対する割合です。</p>
+    </div>
+    <p class="stats-total" id="statsTotal" hidden></p>
+    <p class="stats-msg" id="statsMsg" hidden></p>
+    <div class="card">
+      <p class="card-title">4グループの割合</p>
+      <div class="gbar" id="statsGbar" aria-hidden="true"></div>
+      <ul class="glegend" id="statsGroups"></ul>
+    </div>
+    <div class="card">
+      <p class="card-title">16タイプ ランキング</p>
+      <ol class="rank" id="statsRank"></ol>
+    </div>
+    <div class="actions-row">
+      <button class="btn-text" type="button" data-action="stats-refresh" id="statsRefresh">更新する</button>
+      <button class="btn-text" type="button" data-action="back-result" id="statsBack" hidden>結果画面にもどる</button>
+      <button class="btn-text" type="button" data-action="start">診断をはじめる</button>
+      <button class="btn-text" type="button" data-action="types">16タイプ一覧</button>
+      <button class="btn-text" type="button" data-action="brewers">協力ブルワリー</button>
       <button class="btn-text" type="button" data-action="home">トップへ</button>
     </div>
   </div>
@@ -912,7 +974,7 @@ button { font: inherit; }
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const SCREENS = { intro: $('#s-intro'), result: $('#s-result'), types: $('#s-types'), brewers: $('#s-brewers') };
+  const SCREENS = { intro: $('#s-intro'), result: $('#s-result'), types: $('#s-types'), brewers: $('#s-brewers'), stats: $('#s-stats') };
   const QSCREENS = $$('section[data-screen="question"]');
   const QUESTIONS = QSCREENS.map(el => ({ el, axis: Number(el.dataset.axis), role: el.dataset.role, text: ($('.q-text', el) || {}).textContent || '' }));
   const N = QUESTIONS.length;
@@ -1009,6 +1071,7 @@ button { font: inherit; }
       case 'result': renderResult(); break;
       case 'types': $right.textContent = '16タイプ'; showScreen(SCREENS.types); break;
       case 'brewers': $right.textContent = '協力ブルワリー'; showScreen(SCREENS.brewers); break;
+      case 'stats': $right.textContent = 'みんなの結果'; showScreen(SCREENS.stats); renderStatsPage(); break;
       default: state.view = 'intro'; $right.textContent = ''; showScreen(SCREENS.intro);
     }
   }
@@ -1099,6 +1162,7 @@ button { font: inherit; }
     $('#oppPreview', S).dataset.code = oppCode;
     // プレビュー中で、自分の回答が揃っているときだけ「自分の結果にもどる」を出す
     $('#btnBackResult', S).hidden = !(state.preview && computeScores(state.answers).ok);
+    $('#statsLink', S).hidden = !CONFIG.resultEndpoint;
 
     // 状況に応じてボタンを出し分け
     const mode = res.partial ? 'partial' : (state.fromLink || state.preview) ? 'link' : 'own';
@@ -1157,6 +1221,8 @@ button { font: inherit; }
       case 'retry': startQuiz(); break;
       case 'types': state.view = 'types'; render(); break;
       case 'brewers': state.view = 'brewers'; render(); break;
+      case 'stats': state.view = 'stats'; render(); break;
+      case 'stats-refresh': loadStats(true); break;
       case 'home': state.view = 'intro'; render(); break;
       case 'preview': { const card = el.closest('.type-card'); if (card) { state.preview = card.dataset.code; state.view = 'result'; render(); } break; }
       case 'preview-code': if (el.dataset.code) { state.preview = el.dataset.code; state.view = 'result'; render(); } break;
@@ -1386,6 +1452,97 @@ button { font: inherit; }
   }
 
   /* =========================================================
+     みんなの診断結果：GAS の集計（GET）を 16タイプのランキングと 4グループの割合で表示
+     ========================================================= */
+  let statsCache = null;      // { j, at }
+  let statsSeq = 0;           // 古い応答で新しい表示を上書きしないための連番
+  const STATS_TTL = 30000;    // GAS 側のキャッシュと同じ 30 秒
+
+  function ownCode() {
+    if (state.fromLink) return null;                       // 共有リンクの回答は他人のもの
+    const r = computeScores(state.answers);
+    return r.ok && !r.partial ? r.code : null;
+  }
+  function renderStatsPage() {
+    const $back = $('#statsBack'); if ($back) $back.hidden = !computeScores(state.answers).ok;
+    if (statsCache) paintStats(statsCache.j);
+    loadStats(false);
+  }
+  function setStatsMsg(text, showCards) {
+    const $msg = $('#statsMsg');
+    if ($msg) { $msg.textContent = text || ''; $msg.hidden = !text; }
+    $$('#s-stats .card').forEach(c => { c.hidden = !showCards; });
+    if (!showCards) { const $t = $('#statsTotal'); if ($t) $t.hidden = true; }
+  }
+  function loadStats(force) {
+    if (!CONFIG.resultEndpoint) { setStatsMsg('集計の受け口が設定されていません。', false); return; }
+    if (!force && statsCache && Date.now() - statsCache.at < STATS_TTL) { paintStats(statsCache.j); return; }
+    const seq = ++statsSeq;
+    const $btn = $('#statsRefresh');
+    if ($btn) { $btn.disabled = true; $btn.textContent = '更新中…'; }
+    if (!statsCache) setStatsMsg('集計を読み込み中…', false);
+    const url = CONFIG.resultEndpoint + (CONFIG.resultEndpoint.includes('?') ? '&' : '?') + 't=' + Date.now();
+    fetch(url, { mode: 'cors' }).then(r => r.json()).then(j => {
+      if (seq !== statsSeq) return;
+      if (!j || !j.ok) throw new Error('bad response');
+      statsCache = { j, at: Date.now() };
+      paintStats(j);
+    }).catch(() => {
+      if (seq !== statsSeq) return;
+      if (statsCache) paintStats(statsCache.j);
+      setStatsMsg('集計を取得できませんでした。電波の良いところで「更新する」を押してみてください。', !!statsCache);
+    }).finally(() => {
+      if (seq !== statsSeq) return;
+      if ($btn) { $btn.disabled = false; $btn.textContent = '更新する'; }
+    });
+  }
+  function paintStats(j) {
+    const total = Number(j.total) || 0;
+    const counts = j.counts || {};
+    if (!total) { setStatsMsg('まだ診断した人がいません。最初の1人になってみませんか？', false); return; }
+    const pct = n => String(Math.round(n / total * 1000) / 10);
+    const mine = ownCode();
+
+    // 16タイプ：件数の多い順（同数は一覧の並び順）。0件も出す
+    const rows = $$('.type-card').map((c, i) => ({ code: c.dataset.code, i, n: Number(counts[c.dataset.code]) || 0 }));
+    rows.sort((a, b) => b.n - a.n || a.i - b.i);
+    const max = rows[0].n || 1;
+    $('#statsRank').innerHTML = rows.map(r => {
+      const t = typeData(r.code);
+      const rank = rows.findIndex(x => x.n === r.n) + 1;            // 同数は同順位
+      const me = r.code === mine;
+      return `<li class="rank-item${me ? ' is-me' : ''}" style="--w:${Math.round(r.n / max * 100)}%;--bar:${groupColor(r.code)}">` +
+        `<span class="rank-no">${rank}</span>` +
+        `<img class="rank-chara" src="${t.chara}" alt="" loading="lazy">` +
+        `<span class="rank-body"><span class="rank-name">${esc(t.name)}${me ? '<i class="me-tag">あなた</i>' : ''}</span>` +
+        `<span class="rank-code">${esc(r.code)}</span><span class="rank-bar" aria-hidden="true"><i></i></span></span>` +
+        `<span class="rank-num"><b>${pct(r.n)}%</b><small>${r.n.toLocaleString()}人</small></span></li>`;
+    }).join('');
+
+    // 4グループ：一覧の見出し（① 軽い × ホップ派 …）と同じ並び・同じ色
+    const groups = $$('.type-group').map(g => {
+      const first = $('.type-card', g);
+      const key = first ? first.dataset.code[0] + first.dataset.code[3] : '';
+      const n = rows.filter(r => r.code[0] + r.code[3] === key).reduce((s, r) => s + r.n, 0);
+      const h3 = $('h3', g);
+      return { key, name: h3 ? h3.textContent.trim() : key, n, color: GROUP_COLOR[key] || '#F0A92B' };
+    });
+    $('#statsGbar').innerHTML = groups.filter(g => g.n > 0).map(g => `<i style="--w:${n2p(g.n)}%;--bar:${g.color}"></i>`).join('');
+    $('#statsGroups').innerHTML = groups.map(g =>
+      `<li><i class="dot" style="--bar:${g.color}"></i><span class="gname">${esc(g.name)}</span>` +
+      `<span class="gnum"><b>${pct(g.n)}%</b><small>${g.n.toLocaleString()}人</small></span></li>`).join('');
+
+    // 合計と集計時刻（GAS 側は 30 秒キャッシュなので「時点」）
+    const d = new Date(j.updated || '');
+    const when = isNaN(d) ? '' : ` <span class="stats-when">${d.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })} 時点</span>`;
+    const $t = $('#statsTotal');
+    if ($t) { $t.innerHTML = `これまでに <b>${total.toLocaleString()}人</b> が診断${when}`; $t.hidden = false; }
+    setStatsMsg('', true);
+
+    function n2p(n) { return n / total * 100; }
+  }
+
+  /* =========================================================
      集計（任意）：resultEndpoint（GAS の Web アプリ）が設定されているときだけ送信し、件数を表示
      ========================================================= */
   function report(res) {
@@ -1400,20 +1557,6 @@ button { font: inherit; }
     // 応答に最新の集計が入って返る（自分を含めた「○人目」を出すため）。失敗しても再送はしない（二重計上を避ける）
     fetch(CONFIG.resultEndpoint, { method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain' }, body: payload, keepalive: true })
       .then(r => r.json()).then(j => showStats(res, j, true)).catch(() => { /* 集計は非表示のまま */ });
-  }
-  function fetchStats(res, own) {
-    const url = CONFIG.resultEndpoint + (CONFIG.resultEndpoint.includes('?') ? '&' : '?') + 't=' + Date.now();
-    fetch(url, { mode: 'cors' }).then(r => r.json()).then(j => showStats(res, j, own)).catch(() => { /* noop */ });
-  }
-  function showStats(res, j, own) {
-    const $s = $('#stats'); if (!$s || !j || !j.ok) return;
-    const total = Number(j.total) || 0, mine = Number((j.counts || {})[res.code]) || 0;
-    if (!total) return;
-    const name = esc(typeData(res.code).name);
-    $s.innerHTML = own
-      ? `あなたは <b>${total.toLocaleString()}人目</b> の診断。同じ ${name} は <b>${mine.toLocaleString()}人目</b> です`
-      : `これまでに <b>${total.toLocaleString()}人</b> が診断。${name} は <b>${mine.toLocaleString()}人</b>`;
-    $s.hidden = false;
   }
   function fetchStats(res, own) {
     const url = CONFIG.resultEndpoint + (CONFIG.resultEndpoint.includes('?') ? '&' : '?') + 't=' + Date.now();
@@ -1451,6 +1594,8 @@ button { font: inherit; }
       (items.length ? `<ul class="beers">${items.map(beerHTML).join('')}</ul>` : `<p class="beers-lead">フラッグシップの中には該当がありません。当日はほかの銘柄も出るので、会場で探してみてください。</p>`);
     card.insertBefore(wrap, $('[data-action="preview"]', card));
   });
+  // 集計の受け口が無いときは「みんなの診断結果」への導線を隠す
+  if (!CONFIG.resultEndpoint) $$('[data-action="stats"]').forEach(el => { el.hidden = true; });
   // 協力ブルワリー一覧（アンケート順）
   $('#brewerList').innerHTML = BEERS.map(b => {
     const chip = b.code
